@@ -1,0 +1,239 @@
+
+//package handler
+//
+//import (
+//	"go.mood/pkg"
+//	"net/http"
+//)
+//
+//func (h *Handlers) GetAllUsersHandler(w http.ResponseWriter, r *http.Request) {
+//	if ok := pkg.AllowMethod(w, r, http.MethodGet); !ok {
+//		return
+//	}
+//
+//	users, err := h.db.GetAllUsers()
+//	if err != nil {
+//		pkg.WriteJSONResponse(w, http.StatusInternalServerError, err)
+//		return
+//	}
+//
+//	pkg.WriteJSONResponse(w, http.StatusOK, users)
+//}
+//
+//func (h *Handlers) DeleteUserHandler(w http.ResponseWriter, r *http.Request) {
+//	if ok := pkg.AllowMethod(w, r, http.MethodDelete); !ok {
+//		return
+//	}
+//
+//	id, err := pkg.GetID(r)
+//	if err != nil {
+//		pkg.WriteJSONResponse(w, http.StatusBadRequest, err)
+//		return
+//	}
+//
+//	if err = h.db.DeleteUserByID(id); err != nil {
+//		pkg.WriteJSONResponse(w, http.StatusInternalServerError, err)
+//		return
+//	}
+//
+//	pkg.WriteJSONResponse(w, http.StatusOK, nil)
+//}
+
+
+
+
+//package handler
+//
+//import (
+//	"database/sql"
+//	"encoding/json"
+//	"errors"
+//	"fmt"
+//	"go.mood/internal/model"
+//	"go.mood/pkg"
+//	"net/http"
+//)
+//
+//func (h *Handlers) GetAllTasksHandler(w http.ResponseWriter, r *http.Request) {
+//	if ok := pkg.AllowMethod(w, r, http.MethodGet); !ok {
+//		return
+//	}
+//
+//	tasks, err := h.db.GetAllTasks()
+//	if err != nil {
+//		pkg.WriteJSONResponse(w, http.StatusInternalServerError, errors.New("Ошибка сервера!"))
+//		return
+//	}
+//
+//	pkg.WriteJSONResponse(w, http.StatusOK, tasks)
+//
+//}
+//
+//func (h *Handlers) GetTaskHandler(w http.ResponseWriter, r *http.Request) {
+//	if ok := pkg.AllowMethod(w, r, http.MethodGet); !ok {
+//		return
+//	}
+//
+//	id, err := pkg.GetID(r)
+//	if err != nil {
+//		pkg.WriteJSONResponse(w, http.StatusBadRequest, err)
+//		return
+//	}
+//
+//	task, err := h.db.GetTaskByID(id)
+//	if err != nil {
+//		if errors.Is(err, sql.ErrNoRows) {
+//			pkg.WriteJSONResponse(w, http.StatusNotFound, fmt.Errorf("Задача с id %d не найдена", id))
+//			return
+//		}
+//
+//		pkg.WriteJSONResponse(w, http.StatusInternalServerError, errors.New("Ошибка сервера!"))
+//		return
+//	}
+//
+//	pkg.WriteJSONResponse(w, http.StatusOK, task)
+//}
+//
+//func (h *Handlers) CreateTaskHandler(w http.ResponseWriter, r *http.Request) {
+//	if ok := pkg.AllowMethod(w, r, http.MethodPost); !ok {
+//		return
+//	}
+//
+//	var task model.Task
+//	if err := json.NewDecoder(r.Body).Decode(&task); err != nil {
+//		pkg.WriteJSONResponse(w, http.StatusBadRequest, errors.New("Неверный формат данных!"))
+//		return
+//	}
+//
+//	if err := h.db.CreateTask(&task); err != nil {
+//		pkg.WriteJSONResponse(w, http.StatusInternalServerError, errors.New("Ошибка создания задачи!"))
+//		return
+//	}
+//
+//	pkg.WriteJSONResponse(w, http.StatusCreated, task)
+//}
+//
+//func (h *Handlers) DeleteTaskHandler(w http.ResponseWriter, r *http.Request) {
+//	if ok := pkg.AllowMethod(w, r, http.MethodDelete); !ok {
+//		return
+//	}
+//
+//	id, err := pkg.GetID(r)
+//	if err != nil {
+//		pkg.WriteJSONResponse(w, http.StatusBadRequest, err)
+//		return
+//	}
+//
+//	if err = h.db.DeleteTaskByID(id); err != nil {
+//		if errors.Is(err, sql.ErrNoRows) {
+//			pkg.WriteJSONResponse(w, http.StatusNotFound, fmt.Errorf("Задача с id %d не найдена", id))
+//			return
+//		}
+//		pkg.WriteJSONResponse(w, http.StatusInternalServerError, errors.New("Ошибка сервера!"))
+//		return
+//	}
+//
+//	pkg.WriteJSONResponse(w, http.StatusOK, nil)
+//
+//}
+//
+//func (h *Handlers) UpdateTaskHandler(w http.ResponseWriter, r *http.Request) {
+//	if ok := pkg.AllowMethod(w, r, http.MethodPost); !ok {
+//		return
+//	}
+//
+//	id, err := pkg.GetID(r)
+//	if err != nil {
+//		pkg.WriteJSONResponse(w, http.StatusBadRequest, err)
+//		return
+//	}
+//
+//	var task model.Task
+//	if err := json.NewDecoder(r.Body).Decode(&task); err != nil {
+//		pkg.WriteJSONResponse(w, http.StatusBadRequest, err)
+//		return
+//	}
+//
+//	if err = h.db.UpdateTaskByID(id, &task); err != nil {
+//		if errors.Is(err, sql.ErrNoRows) {
+//			pkg.WriteJSONResponse(w, http.StatusNotFound, err)
+//			return
+//		}
+//	}
+//
+//	pkg.WriteJSONResponse(w, http.StatusOK, nil)
+//}
+//
+//var statusTask bool
+//
+//func (h *Handlers) StatusTask(w http.ResponseWriter, r *http.Request) {
+//	//pkg.AllowMethod(w, r, http.MethodPost)
+//
+//	//id, err := pkg.GetID(r)
+//	//if err != nil {
+//	//	pkg.WriteJSONResponse(w, http.StatusBadRequest, err)
+//	//	return
+//	//}
+//
+//	fmt.Println(statusTask)
+//
+//	//err = h.db.StatusTaskByID(id)
+//	//if err != nil {
+//	//	if errors.Is(err, sql.ErrNoRows) {
+//	//		pkg.WriteJSONResponse(w, http.StatusNotFound, err)
+//	//		return
+//	//	}
+//	//	pkg.WriteJSONResponse(w, http.StatusInternalServerError, err)
+//	//	return
+//	//}
+//	pkg.WriteJSONResponse(w, http.StatusOK, nil)
+//}
+
+
+//package handler
+//
+//import (
+//	"github.com/gorilla/mux"
+//	"go.mood/internal/database"
+//	"go.mood/internal/service"
+//)
+//
+//// Handlers — структура для всех обработчиков
+//type Handlers struct {
+//	db      *database.Database // Работа с базой данных
+//	service *service.Service   // Логика приложения (если используется)
+//}
+//
+//// NewHandler — конструктор нового экземпляра Handlers
+//func NewHandler(s *service.Service, db *database.Database) *Handlers {
+//	return &Handlers{
+//		service: s,
+//		db:      db,
+//	}
+//}
+//
+//// InitRoutes — инициализация всех маршрутов (роутов) приложения
+//func (h *Handlers) InitRoutes() *mux.Router {
+//	router := mux.NewRouter()
+//
+//	// login
+//	router.HandleFunc("/login", h.LoginHandler)
+//	// tasks
+//	router.HandleFunc("/tasks", h.GetAllTasksHandler)
+//	router.HandleFunc("/task", h.GetTaskHandler)
+//	router.HandleFunc("/task", h.CreateTaskHandler)
+//	router.HandleFunc("/task", h.DeleteTaskHandler)
+//	router.HandleFunc("/update_task", h.UpdateTaskHandler)
+//	router.HandleFunc("/status_task", h.StatusTask)
+//	// users
+//	router.HandleFunc("/users", h.GetAllUsersHandler)
+//	router.HandleFunc("/delete_users", h.DeleteUserHandler)
+//
+//	// Авторизация
+//	//router.HandleFunc("/login", h.LoginHandler).Methods(http.MethodPost, http.MethodOptions)
+//
+//	// Открытые маршруты для пользователей
+//	//router.HandleFunc("/employee", h.JWTMiddleware(h.GetEmployee)).Methods(http.MethodGet, http.MethodOptions)
+//
+//	return router
+//}

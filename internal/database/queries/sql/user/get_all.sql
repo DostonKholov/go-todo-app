@@ -1,0 +1,1 @@
+SELECT id, user_name, email, password_hash, role, created_at FROM users

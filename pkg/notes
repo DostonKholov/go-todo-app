@@ -1,0 +1,151 @@
+gogithub.com/joho/godotenv
+github.com/lib/pq
+gorm.io/driver/postgres
+github.com/gorilla/mux
+github.com/spf13/viper
+golang.org/x/crypto/bcrypt
+github.com/golang-jwt/jwt/v5
+
+
+Bearer 
+
+
+CREATE TABLE users(
+	id SERIAL PRIMARY KEY,
+	user_name VARCHAR(50) NOT NULL,
+	email VARCHAR(100) UNIQUE NOT NULL,
+	password_hash TEXT NOT NULL,
+	role VARCHAR(50) DEFAULT 'user',
+	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+
+
+
+CREATE TABLE tasks (
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    task TEXT NOT NULL,
+    status BOOLEAN DEFAULT false, -- false = не сделано, true = сделано
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+
+
+
+
+CREATE TABLE tasks(
+	id SERIAL PRIMARY KEY,
+	user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+	task TEXT NOT NULL,
+	status VARCHAR(50) DEFAULT 'pending',
+	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+
+INSERT INTO users (user_name, email, password_hash, role)
+VALUES
+('Alice', 'alice@example.com', 'hashed_pw1', 'user'),
+('Bob', 'bob@example.com', 'hashed_pw2', 'user'),
+('Charlie', 'charlie@example.com', 'hashed_pw3', 'admin'),
+('David', 'david@example.com', 'hashed_pw4', 'user'),
+('Eva', 'eva@example.com', 'hashed_pw5', 'user'),
+('Frank', 'frank@example.com', 'hashed_pw6', 'user'),
+('Grace', 'grace@example.com', 'hashed_pw7', 'user'),
+('Helen', 'helen@example.com', 'hashed_pw8', 'user'),
+('Ivan', 'ivan@example.com', 'hashed_pw9', 'user'),
+('Jack', 'jack@example.com', 'hashed_pw10', 'user');
+
+
+
+-- Для user_id = 1 (Alice)
+INSERT INTO tasks (user_id, task) VALUES
+(1, 'Купить продукты'),
+(1, 'Прочитать книгу'),
+(1, 'Позвонить маме'),
+(1, 'Сделать домашку'),
+(1, 'Погулять с собакой');
+
+-- Для user_id = 2 (Bob)
+INSERT INTO tasks (user_id, task) VALUES
+(2, 'Отправить отчет'),
+(2, 'Записаться к врачу'),
+(2, 'Убраться дома'),
+(2, 'Позаниматься спортом'),
+(2, 'Сходить в магазин');
+
+-- Для user_id = 3 (Charlie)
+INSERT INTO tasks (user_id, task) VALUES
+(3, 'Проверить почту'),
+(3, 'Настроить сервер'),
+(3, 'Обновить сайт'),
+(3, 'Написать статью'),
+(3, 'Пройти собеседование');
+
+-- Для user_id = 4 (David)
+INSERT INTO tasks (user_id, task) VALUES
+(4, 'Купить билеты'),
+(4, 'Сделать резервную копию'),
+(4, 'Прочитать новости'),
+(4, 'Сдать отчёт по проекту'),
+(4, 'Сходить в банк');
+
+-- Для user_id = 5 (Eva)
+INSERT INTO tasks (user_id, task) VALUES
+(5, 'Написать резюме'),
+(5, 'Отправить заявку'),
+(5, 'Приготовить ужин'),
+(5, 'Сделать зарядку'),
+(5, 'Устроить уборку');
+
+-- Для user_id = 6 (Frank)
+INSERT INTO tasks (user_id, task) VALUES
+(6, 'Обновить драйверы'),
+(6, 'Посмотреть обучающее видео'),
+(6, 'Протестировать API'),
+(6, 'Проверить баги'),
+(6, 'Написать документацию');
+
+-- Для user_id = 7 (Grace)
+INSERT INTO tasks (user_id, task) VALUES
+(7, 'Записаться на курс'),
+(7, 'Послушать подкаст'),
+(7, 'Прочитать статью'),
+(7, 'Обновить профиль'),
+(7, 'Пройти тест');
+
+-- Для user_id = 8 (Helen)
+INSERT INTO tasks (user_id, task) VALUES
+(8, 'Приготовить завтрак'),
+(8, 'Позвонить коллеге'),
+(8, 'Сделать заказ'),
+(8, 'Настроить Wi-Fi'),
+(8, 'Посмотреть вебинар');
+
+-- Для user_id = 9 (Ivan)
+INSERT INTO tasks (user_id, task) VALUES
+(9, 'Сделать резервную копию базы данных'),
+(9, 'Проверить безопасность'),
+(9, 'Обновить зависимости'),
+(9, 'Настроить CI/CD'),
+(9, 'Оптимизировать запросы');
+
+-- Для user_id = 10 (Jack)
+INSERT INTO tasks (user_id, task) VALUES
+(10, 'Составить план'),
+(10, 'Проверить сроки'),
+(10, 'Провести встречу'),
+(10, 'Создать презентацию'),
+(10, 'Закончить проект');
+
+UPDATE users SET role='user' WHERE id = 3
+
+SELECT * FROM tasks JOIN users ON users.id = tasks.user_id WHERE users.id = 1;
+
+
+SELECT * FROM users;
+
+SELECT * FROM tasks;
+

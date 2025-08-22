@@ -1,0 +1,1 @@
+SELECT id, user_id, task, status, created_at, updated_at FROM tasks WHERE user_id = $1

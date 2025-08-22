@@ -1,0 +1,1 @@
+INSERT INTO tasks (user_id, task) VALUES($1, $2) RETURNING id

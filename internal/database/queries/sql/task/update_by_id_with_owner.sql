@@ -1,0 +1,1 @@
+UPDATE tasks SET task = $1, updated_at = CURRENT_TIMESTAMP WHERE id = $2 AND user_id = $3
